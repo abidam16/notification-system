@@ -27,4 +27,8 @@ class ProductInvitationService (
     fun updateProductInvitation(updateInvitationRequestDto: UpdateInvitationRequestDto) {
         productInvitationRepo.save(updateInvitationRequestDto.toEntity())
     }
+
+    fun deleteProductInvitation(productId: Long) {
+        productInvitationRepo.deleteById(productId)
+    }
 }
