@@ -8,6 +8,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
@@ -15,40 +17,32 @@ import java.time.LocalDateTime
 class Notification (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long?,
+    var id: Long? = null,
 
     @Column(name = "user_id")
-    var userId: Long?,
+    var userId: Long? = null,
 
     @Column(name = "type")
-    var type: String,
+    var type: String? = null,
 
     @Column(name = "reference_id")
-    var referenceId: Long?,
+    var referenceId: Long? = null,
 
     @Column(name = "title")
-    var title: String?,
+    var title: String? = null,
 
     @Column(name = "body")
-    var body: String?,
+    var body: String? = null,
 
     @Column(name = "status")
-    var status: String?,
+    var status: String? = null,
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    var createdAt: LocalDateTime?,
+    var createdAt: LocalDateTime? = null,
 
+    @UpdateTimestamp
     @Column(name = "read_at", updatable = false)
-    var readAt: LocalDateTime?,
+    var readAt: LocalDateTime? = null,
 
-) {
-    @PrePersist
-    fun onCreate() {
-        createdAt = LocalDateTime.now()
-    }
-
-    @PreUpdate
-    fun onUpdate() {
-        readAt = LocalDateTime.now()
-    }
-}
+)

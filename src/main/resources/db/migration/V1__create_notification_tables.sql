@@ -3,8 +3,8 @@ CREATE TABLE product_invitation (
                                     product_id BIGINT NOT NULL,
                                     inviter_user_id BIGINT NOT NULL,
                                     target_user_id BIGINT NOT NULL,
-                                    requested_role VARCHAR(50) NOT NULL,
-                                    status VARCHAR(30) NOT NULL,
+                                    requested_role SMALLINT NOT NULL,
+                                    status SMALLINT NOT NULL,
                                     message TEXT NULL,
                                     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -19,11 +19,15 @@ CREATE INDEX idx_product_invitation_target_created
 CREATE INDEX idx_product_invitation_target_status_created
     ON product_invitation (target_user_id, status, created_at DESC);
 
+CREATE UNIQUE INDEX uq_pending_invitation
+    ON product_invitation (product_id, target_user_id)
+    WHERE status = 'PENDING';
+
 CREATE TABLE user_product_membership (
                                          id BIGSERIAL PRIMARY KEY,
                                          product_id BIGINT NOT NULL,
                                          user_id BIGINT NOT NULL,
-                                         role VARCHAR(50) NOT NULL,
+                                         role SMALLINT NOT NULL,
                                          granted_by_user_id BIGINT NULL,
                                          granted_via_invitation_id BIGINT NULL,
                                          created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -33,11 +37,11 @@ CREATE TABLE user_product_membership (
 CREATE TABLE notification (
                               id BIGSERIAL PRIMARY KEY,
                               user_id BIGINT NOT NULL,
-                              type VARCHAR(50) NOT NULL,
+                              type SMALLINT NOT NULL,
                               reference_id BIGINT NOT NULL,
                               title VARCHAR(255) NOT NULL,
                               body TEXT NULL,
-                              status VARCHAR(20) NOT NULL DEFAULT 'UNREAD',
+                              status SMALLINT NOT NULL DEFAULT 'UNREAD',
                               created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                               read_at TIMESTAMP NULL
 );
@@ -47,3 +51,19 @@ CREATE INDEX idx_notification_user_status_created
 
 CREATE INDEX idx_notification_user_created
     ON notification (user_id, created_at DESC);
+
+CREATE TABLE user (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(254) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(254) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP,
+)y
+
+CREATE TABLE product (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP,
+)

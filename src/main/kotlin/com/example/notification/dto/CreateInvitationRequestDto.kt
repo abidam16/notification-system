@@ -1,6 +1,9 @@
 package com.example.notification.dto
 
+import com.example.notification.entity.Notification
+import com.example.notification.entity.Product
 import com.example.notification.entity.ProductInvitation
+import com.example.notification.entity.User
 
 data class CreateInvitationRequestDto (
     val productId: Long,
@@ -8,30 +11,45 @@ data class CreateInvitationRequestDto (
     val targetUserId: Long,
     val requestedRole: String,
     val status: String,
-    val message: String
+    val productName: String,
+    val inviterName: String,
+    val notificationMessage: String
 )
 
-class UpdateInvitationRequestDto (
+data class UpdateInvitationRequestDto (
     val id: Long,
     val requestedRole: String,
     val status: String,
-    val message: String
+    var notificationMessage: String,
+    val notificationId: Long,
 )
 
-fun CreateInvitationRequestDto.toEntity(): ProductInvitation =
+data class ProductAndInviterName(
+    val productName: String,
+    val inviterName: String,
+)
+
+fun CreateInvitationRequestDto.toEntity(
+    product: Product,
+    user: User
+): ProductInvitation =
     ProductInvitation(
-        productId = this.productId,
-        inviterUserId = this.inviterUserId,
-        targetUserId = this.targetUserId,
+        productId = product,
+        inviterUserId = user,
+        targetUserId = user,
         requestedRole = this.requestedRole,
-        status = "PENDING",
-        message = this.message
+        status = "PENDING"
     )
 
 fun UpdateInvitationRequestDto.toEntity(): ProductInvitation =
     ProductInvitation(
         id = this.id,
         requestedRole = this.requestedRole,
-        status = this.status,
-        message = this.message
+        status = this.status
+    )
+
+fun UpdateInvitationRequestDto.toNotification(): Notification =
+    Notification(
+        id = this.notificationId,
+        body = this.notificationMessage
     )
