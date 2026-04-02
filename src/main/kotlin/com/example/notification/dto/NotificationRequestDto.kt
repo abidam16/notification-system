@@ -3,6 +3,7 @@ package com.example.notification.dto
 import com.example.notification.constant.NotificationStatus
 import com.example.notification.entity.Notification
 import jakarta.persistence.Column
+import java.time.LocalDateTime
 
 data class NotificationRequestDto (
     var userId: Long?,
@@ -16,7 +17,9 @@ data class NotificationRequestDto (
 
 data class ReadNotificationRequestDto (
     var id: Long?,
-    var status: Int?,
+    var cursorCreatedAt: LocalDateTime?,
+    var cursorId: Long?,
+    var size: Int?,
 )
 
 data class UpdateStatusNotificationDto (

@@ -7,7 +7,6 @@ import com.example.notification.constant.ProductRole
 import com.example.notification.dto.CreateInvitationRequestDto
 import com.example.notification.dto.UpdateInvitationRequestDto
 import com.example.notification.dto.toEntity
-import com.example.notification.dto.toNotification
 import com.example.notification.entity.Notification
 import com.example.notification.entity.ProductInvitation
 import com.example.notification.repository.NotificationRepo
@@ -90,7 +89,7 @@ class ProductInvitationService (
     fun updateProductInvitation(updateInvitationRequestDto: UpdateInvitationRequestDto) {
         val currentInvitation = productInvitationRepo.findProductInvitationByIdAndStatus(
             updateInvitationRequestDto.id, ProductInvitationStatus.PENDING.statusInt)
-        val currentNotification = notificationRepo.findNotificationByReferenceId(updateInvitationRequestDto.id)
+        val currentNotification = notificationRepo.findNotificationByUsersId(updateInvitationRequestDto.id)
         if (currentInvitation == null) {
             throw IllegalArgumentException("Invitation with ID ${updateInvitationRequestDto.id} not found")
         }
@@ -125,7 +124,7 @@ class ProductInvitationService (
     fun cancelProductInvitation(productInvitationId: Long) {
         val currentInvitation = productInvitationRepo.findProductInvitationByIdAndStatus(productInvitationId,
             ProductInvitationStatus.PENDING.statusInt)
-        val currentNotification = notificationRepo.findNotificationByReferenceId(productInvitationId)
+        val currentNotification = notificationRepo.findNotificationByUsersId(productInvitationId)
         if (currentInvitation == null) {
             throw IllegalArgumentException("Invitation with ID $productInvitationId not found")
         }
