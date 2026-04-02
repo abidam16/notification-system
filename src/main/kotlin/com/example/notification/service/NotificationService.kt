@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 class NotificationService(
     private val notificationRepo: NotificationRepo
 ) {
-    fun getNotificationByReferenceId(notificationId: Long) {
+    fun getNotificationWithPagination(notificationId: Long) {
         notificationRepo.findNotificationByReferenceId(notificationId)
     }
 }

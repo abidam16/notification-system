@@ -21,7 +21,7 @@ CREATE INDEX idx_product_invitation_target_status_created
 
 CREATE UNIQUE INDEX uq_pending_invitation
     ON product_invitation (product_id, target_user_id)
-    WHERE status = 'PENDING';
+    WHERE status = 0;
 
 CREATE TABLE user_product_membership (
                                          id BIGSERIAL PRIMARY KEY,
@@ -37,11 +37,12 @@ CREATE TABLE user_product_membership (
 CREATE TABLE notification (
                               id BIGSERIAL PRIMARY KEY,
                               user_id BIGINT NOT NULL,
+                              from_user_id BIGINT NOT NULL,
                               type SMALLINT NOT NULL,
                               reference_id BIGINT NOT NULL,
                               title VARCHAR(255) NOT NULL,
                               body TEXT NULL,
-                              status SMALLINT NOT NULL DEFAULT 'UNREAD',
+                              status SMALLINT NOT NULL DEFAULT 0,
                               created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                               read_at TIMESTAMP NULL
 );
@@ -52,18 +53,27 @@ CREATE INDEX idx_notification_user_status_created
 CREATE INDEX idx_notification_user_created
     ON notification (user_id, created_at DESC);
 
-CREATE TABLE user (
-    id BIGSERIAL PRIMARY KEY,
-    email VARCHAR(254) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    name VARCHAR(254) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP,
-)y
+CREATE INDEX idx_notification_user_from_user
+    ON notification (user_id, from_user_id, created_at DESC);
+
+CREATE TABLE users (
+                       id BIGSERIAL PRIMARY KEY,
+                       email VARCHAR(254) UNIQUE NOT NULL,
+                       password VARCHAR(255) NOT NULL,
+                       name VARCHAR(254) NOT NULL,
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       updated_at TIMESTAMP
+);
 
 CREATE TABLE product (
-    id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP,
-)
+                         id BIGSERIAL PRIMARY KEY,
+                         name VARCHAR(255) NOT NULL,
+                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         updated_at TIMESTAMP
+);
+
+INSERT INTO users(email, password, name)
+VALUES ('rawr123@yopmail.com', 'alsdkjflsajkk', 'rawr');
+
+INSERT INTO product(name)
+VALUES ('product A');

@@ -6,5 +6,11 @@ enum class NotificationStatus(
     val label: String
 ) {
     UNREAD("UNREAD", 0, "Unread"),
-    READ("READ", 1, "Read"),
+    READ("READ", 1, "Read");
+
+    companion object {
+        private val mapInt = entries.associateBy(NotificationStatus::statusInt)
+
+        fun fromInt(statusInt: Int) = mapInt[statusInt]
+    }
 }

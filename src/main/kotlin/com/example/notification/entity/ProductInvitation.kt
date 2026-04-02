@@ -2,17 +2,14 @@ package com.example.notification.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.PrePersist
-import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
 import jakarta.persistence.Version
-import lombok.Data
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
@@ -24,26 +21,20 @@ class ProductInvitation (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "id")
     @Column(name = "product_id")
-    var productId: Product? = null,
+    var productId: Long? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "id")
     @Column(name = "inviter_user_id")
-    var inviterUserId: User? = null,
+    var inviterUsersId: Long? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "id")
     @Column(name = "target_user_id")
-    var targetUserId: User? = null,
+    var targetUsersId: Long? = null,
 
     @Column(name = "requested_role")
-    var requestedRole: String? = null,
+    var requestedRole: Short? = null,
 
     @Column(name = "status")
-    var status: String? = null,
+    var status: Short? = null,
 
     @Column(name = "message")
     var message: String? = null,
